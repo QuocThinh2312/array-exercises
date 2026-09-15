@@ -1,13 +1,23 @@
 const twoSum = function (arr = [], k = 0) {
-  const map = {};
+  const sortedArr = arr.toSorted((a, b) => a - b);
+  let l = 0;
+  let r = sortedArr.length - 1;
   const res = [];
 
-  arr.forEach((x) => {
-    if (map[k - x] && !map[x]) res.push([x, k - x]);
-    map[x] = true;
-  });
+  while (l < r) {
+    const sum = sortedArr[l] + sortedArr[r];
+    if (sum > k) --r;
+    else if (sum < k) ++l;
+    else {
+      res.push([sortedArr[l], sortedArr[r]]);
+
+      while (l < r && sortedArr[l] === sortedArr[l + 1]) ++l;
+      while (l < r && sortedArr[r] === sortedArr[r - 1]) --r;
+
+      ++l;
+      --r;
+    }
+  }
 
   return res;
 };
-
-console.log(twoSum([1, 2, 3, 4, 2, 3, 4], 5));
